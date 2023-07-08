@@ -4,7 +4,6 @@ extends Node2D
 
 @export var runner : PackedScene
 
-
 func _ready():
 	var player = runner.instantiate()
 	add_child(player)

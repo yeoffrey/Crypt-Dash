@@ -23,7 +23,7 @@ MazeManager="*res://Scripts/MazeManager.gd"
 
 window/size/viewport_width=336
 window/size/viewport_height=336
-window/stretch/mode="canvas_items"
+window/stretch/mode="viewport"
 
 [editor]
 
