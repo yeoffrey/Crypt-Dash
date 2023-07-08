@@ -18,9 +18,18 @@ func _input(event):
 		if event.button_index == 1 and event.pressed:
 			var mouse_pos : Vector2 = get_global_mouse_position()
 			var cell : Vector2 = local_to_map(to_local(mouse_pos))
-			if cell == Vector2(local_to_map(to_local(runner.position))):
+			var player_pos : Vector2 = Vector2(local_to_map(to_local(runner.position)))
+			if cell == player_pos:
+				print("placing at player")
 				return
 			if MazeManager.get_value(cell.x,cell.y) == Enums.TILE_TYPE.FLOOR:
 				MazeManager.set_value(cell.x,cell.y,Enums.TILE_TYPE.WALL)
 			else:
 				MazeManager.set_value(cell.x,cell.y,Enums.TILE_TYPE.FLOOR)
+			if !MazeManager.is_solvable(player_pos):
+				print("Placing unsolvable")
+				if MazeManager.get_value(cell.x,cell.y) == Enums.TILE_TYPE.FLOOR:
+					MazeManager.set_value(cell.x,cell.y,Enums.TILE_TYPE.WALL)
+				else:
+					MazeManager.set_value(cell.x,cell.y,Enums.TILE_TYPE.FLOOR)
+
