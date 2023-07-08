@@ -1,7 +1,40 @@
 [gd_scene load_steps=2 format=3 uid="uid://brdhj3r25ytc3"]
 
-[ext_resource type="PackedScene" uid="uid://bh4oi63norsq3" path="res://Scenes/game.tscn" id="1_asci1"]
+[ext_resource type="Script" path="res://Scenes/sceneController.gd" id="1_le7l6"]
 
 [node name="Main" type="Node2D"]
+script = ExtResource("1_le7l6")
 
-[node name="Game" parent="." instance=ExtResource("1_asci1")]
+[node name="User Interface" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="User Interface"]
+layout_mode = 0
+offset_left = 82.0
+offset_top = 111.0
+offset_right = 249.0
+offset_bottom = 138.0
+text = "Morphing Mazeeeeee"
+
+[node name="Play" type="Button" parent="User Interface"]
+layout_mode = 0
+offset_left = 137.0
+offset_top = 152.0
+offset_right = 183.0
+offset_bottom = 183.0
+text = "Start"
+
+[node name="Quit" type="Button" parent="User Interface"]
+offset_left = 137.0
+offset_top = 191.0
+offset_right = 183.0
+offset_bottom = 222.0
+text = "Quit"
+
+[connection signal="pressed" from="User Interface/Play" to="." method="start"]
+[connection signal="pressed" from="User Interface/Play" to="." method="handleStartButtonClick"]
+[connection signal="pressed" from="User Interface/Quit" to="." method="quit"]
+[connection signal="pressed" from="User Interface/Quit" to="." method="handleStartButtonClick"]
