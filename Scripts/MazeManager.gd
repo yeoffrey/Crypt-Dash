@@ -53,7 +53,7 @@ func pick_neighbor(cell : Vector2, distance : int = 2):
 	
 	for i in 4:
 		neighbor = get_neighbor(cell, i, distance)
-		if neighbor != Vector2.ZERO && maze[neighbor.x][neighbor.y] != Enums.TILE_TYPE.FLOOR:
+		if neighbor != Vector2(-1,-1) && maze[neighbor.x][neighbor.y] != Enums.TILE_TYPE.FLOOR:
 			neighbors.append(neighbor)
 	
 	if neighbors.is_empty():
@@ -63,15 +63,15 @@ func pick_neighbor(cell : Vector2, distance : int = 2):
 # Returns Vector2 of cell location of neighbor distance away
 # 0 = Up, 1 = Right, 2 = Down, 3 = left
 func get_neighbor(cell : Vector2, direction : int = 0, distance : int = 2):
-	if direction == 0 && cell.y-distance > 0:
+	if direction == 0 && cell.y-distance >= 0:
 		return Vector2(cell.x,cell.y-distance)
-	if direction == 1 && cell.x+distance < width-1:
+	if direction == 1 && cell.x+distance < width:
 		return Vector2(cell.x+distance,cell.y)
-	if direction == 2 && cell.y+distance < height-1:
+	if direction == 2 && cell.y+distance < height:
 		return Vector2(cell.x,cell.y+distance)
-	if direction == 3 && cell.x-distance > 0:
+	if direction == 3 && cell.x-distance >= 0:
 		return Vector2(cell.x-distance,cell.y)
-	return Vector2.ZERO
+	return Vector2(-1,-1)
 
 # Sets a line from to on array to value. If diagonal will do both vertical and horizontal lines
 func set_line(from : Vector2, to : Vector2, val : int):
@@ -105,3 +105,40 @@ func print_array():
 	for i in width:
 		print(maze[i])
 	print("")
+
+func is_solvable(cell:Vector2):
+	
+	var open_list : Array
+	var closed_list : Array
+	open_list.append(Successor.new(cell))
+	
+	while !(open_list.is_empty()):
+		
+		var lowest_f = 0
+		
+		for i in open_list.size():
+			if open_list[i].f < open_list[lowest_f].f:
+				lowest_f = i
+		
+		for i in 4:
+			var neighbor = Successor.new(get_neighbor(open_list[lowest_f].position,i,1),open_list[lowest_f])
+			if maze[neighbor.position.x][neighbor.position.y] == Enums.TILE_TYPE.WALL:
+				continue
+			if neighbor.position == Vector2(-1,-1):
+				continue
+			if neighbor.position == end_cell:
+				return true
+			neighbor.find_f(end_cell)
+			var append = true
+			for j in open_list.size():
+				if open_list[j].position == neighbor.position && open_list[j].f < neighbor.f:
+					append = false
+			for j in closed_list.size():
+				if closed_list[j].position == neighbor.position && closed_list[j].f < neighbor.f:
+					append = false
+			if append:
+				open_list.append(neighbor)
+		
+		closed_list.append(open_list[lowest_f])
+		open_list.remove_at(lowest_f)
+	return false
