@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" path="res://Scripts/gameManager.gd" id="1_h0vcg"]
 [ext_resource type="PackedScene" uid="uid://00frgtfrq6ks" path="res://Scenes/runner.tscn" id="2_t3okd"]
-[ext_resource type="Texture2D" uid="uid://bc4k7yvls1pcu" path="res://Sprites/walls_and_floors_sprite_sheet (1).png" id="3_ddmlh"]
+[ext_resource type="Texture2D" uid="uid://cpqliyh4xxte5" path="res://Sprites/wall_floor_sprite_sheet.png" id="3_xfcar"]
 [ext_resource type="Script" path="res://Scripts/MazeMap.gd" id="4_xsm37"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ch73p"]
-texture = ExtResource("3_ddmlh")
+texture = ExtResource("3_xfcar")
 0:0/0 = 0
 0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 0:0/0/physics_layer_0/angular_velocity = 0.0
@@ -14,11 +14,9 @@ texture = ExtResource("3_ddmlh")
 1:0/0 = 0
 1:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 1:0/0/physics_layer_0/angular_velocity = 0.0
-1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 2:0/0 = 0
 2:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 2:0/0/physics_layer_0/angular_velocity = 0.0
-2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 3:0/0 = 0
 3:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 3:0/0/physics_layer_0/angular_velocity = 0.0
@@ -32,6 +30,7 @@ script = ExtResource("1_h0vcg")
 runner = ExtResource("2_t3okd")
 
 [node name="MazeMap" type="TileMap" parent="."]
+texture_filter = 1
 tile_set = SubResource("TileSet_jf6u7")
 format = 2
 layer_0/tile_data = PackedInt32Array(0, 65536, 0, 1, 65536, 0, 2, 65536, 0, 3, 65536, 0, 4, 65536, 0, 5, 65536, 0, 6, 65536, 0, 7, 65536, 0, 8, 65536, 0, 9, 65536, 0, 10, 65536, 0, 11, 65536, 0, 12, 65536, 0, 13, 65536, 0, 14, 65536, 0, 15, 65536, 0, 16, 65536, 0, 17, 65536, 0, 18, 65536, 0, 19, 65536, 0, 20, 65536, 0)

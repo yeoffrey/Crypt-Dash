@@ -19,6 +19,6 @@ func _input(event):
 			if cell == Vector2(local_to_map(to_local(runner.position))):
 				return
 			if MazeManager.get_value(cell.x,cell.y) == 1:
-				MazeManager.set_value(cell.x,cell.y,3)
+				MazeManager.set_value(cell.x,cell.y,0)
 			else:
 				MazeManager.set_value(cell.x,cell.y,1)
