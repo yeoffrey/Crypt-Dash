@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+class_name Runner
+
 @onready var animation_tree = $AnimationTree
 @onready var playback = animation_tree["parameters/playback"]
 
