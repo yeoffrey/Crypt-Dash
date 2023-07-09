@@ -9,7 +9,7 @@ var start_cell : Vector2
 
 var rng = RandomNumberGenerator.new()
 
-func _init(newwidth:int = 21, newheight:int = 21):
+func _init(newwidth:int = 51, newheight:int = 51):
 	
 	maze = Array()
 	width = newwidth
