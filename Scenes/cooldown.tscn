@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://c05d40uq3snoy"]
+
+[ext_resource type="Script" path="res://Cooldown.gd" id="1_sx1vu"]
+[ext_resource type="Texture2D" uid="uid://bnutdn1bq76kv" path="res://Sprites/Circle.png" id="2_w0og4"]
+
+[node name="Cooldown" type="ColorRect"]
+offset_right = 32.0
+offset_bottom = 32.0
+color = Color(0, 0, 0, 0.32549)
+script = ExtResource("1_sx1vu")
+
+[node name="Progress" type="TextureProgressBar" parent="."]
+texture_filter = 1
+layout_mode = 1
+offset_right = 32.0
+offset_bottom = 32.0
+value = 40.0
+fill_mode = 4
+texture_progress = ExtResource("2_w0og4")
+tint_under = Color(0.113725, 0.113725, 0.113725, 1)
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

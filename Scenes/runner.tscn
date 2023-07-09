@@ -234,9 +234,12 @@ transitions = ["idle", "running", SubResource("AnimationNodeStateMachineTransiti
 [sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_acaat"]
 
 [node name="Runner" type="CharacterBody2D"]
+collision_layer = 3
+collision_mask = 3
 script = ExtResource("1_5i4bh")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 1
 texture_filter = 1
 texture = ExtResource("2_hk71s")
 hframes = 10
@@ -255,3 +258,8 @@ anim_player = NodePath("../AnimationPlayer")
 parameters/playback = SubResource("AnimationNodeStateMachinePlayback_acaat")
 parameters/idle/blend_position = Vector2(0, 0)
 parameters/running/blend_position = Vector2(-0.0199667, -0.0419161)
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

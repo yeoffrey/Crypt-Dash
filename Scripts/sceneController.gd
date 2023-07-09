@@ -1,5 +1,4 @@
 extends Node2D
-
 # Called when start button is clicked.
 func start():
 	get_tree().change_scene_to_file("res://Scenes/game.tscn")

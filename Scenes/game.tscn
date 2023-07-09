@@ -1,9 +1,15 @@
-[gd_scene load_steps=7 format=3 uid="uid://bh4oi63norsq3"]
+[gd_scene load_steps=13 format=3 uid="uid://bh4oi63norsq3"]
 
 [ext_resource type="Script" path="res://Scripts/gameManager.gd" id="1_h0vcg"]
+[ext_resource type="PackedScene" uid="uid://b0k81ua8xbgxp" path="res://Scenes/maker.tscn" id="2_ilbcw"]
 [ext_resource type="PackedScene" uid="uid://00frgtfrq6ks" path="res://Scenes/runner.tscn" id="2_t3okd"]
-[ext_resource type="Texture2D" uid="uid://cpqliyh4xxte5" path="res://Sprites/wall_floor_sprite_sheet.png" id="3_xfcar"]
+[ext_resource type="Texture2D" uid="uid://co2peew7bu0ci" path="res://Sprites/wall_floor_sprite_sheet.png" id="3_xfcar"]
+[ext_resource type="PackedScene" uid="uid://dl5oubhpge4gc" path="res://Scenes/pickup.tscn" id="4_4yvjp"]
 [ext_resource type="Script" path="res://Scripts/MazeMap.gd" id="4_xsm37"]
+[ext_resource type="Texture2D" uid="uid://bphuuceod4jb" path="res://Sprites/builder_ui_spritesheet.png" id="6_1umiv"]
+[ext_resource type="Script" path="res://Cooldown.gd" id="7_6vbxr"]
+[ext_resource type="Texture2D" uid="uid://b6nyw7hufqmo4" path="res://Sprites/Progressbar.png" id="8_bplva"]
+[ext_resource type="Texture2D" uid="uid://bnutdn1bq76kv" path="res://Sprites/Circle.png" id="8_ey5wi"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ch73p"]
 texture = ExtResource("3_xfcar")
@@ -17,9 +23,22 @@ texture = ExtResource("3_xfcar")
 2:0/0 = 0
 2:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 2:0/0/physics_layer_0/angular_velocity = 0.0
+0:1/0 = 0
+0:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:1/0/physics_layer_0/angular_velocity = 0.0
+0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:1/0 = 0
+1:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:1/0/physics_layer_0/angular_velocity = 0.0
+2:1/0 = 0
+2:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+2:1/0/physics_layer_0/angular_velocity = 0.0
 3:0/0 = 0
 3:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 3:0/0/physics_layer_0/angular_velocity = 0.0
+3:1/0 = 0
+3:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+3:1/0/physics_layer_0/angular_velocity = 0.0
 
 [sub_resource type="TileSet" id="TileSet_jf6u7"]
 physics_layer_0/collision_layer = 1
@@ -27,10 +46,400 @@ sources/0 = SubResource("TileSetAtlasSource_ch73p")
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_h0vcg")
-runner = ExtResource("2_t3okd")
+runner_scence = ExtResource("2_t3okd")
+maker_scene = ExtResource("2_ilbcw")
+pickup_scene = ExtResource("4_4yvjp")
 
 [node name="MazeMap" type="TileMap" parent="."]
 texture_filter = 1
 tile_set = SubResource("TileSet_jf6u7")
 format = 2
+layer_0/tile_data = PackedInt32Array(0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 4, 0, 0, 65536, 131072, 0, 65537, 131072, 0, 65538, 131072, 0, 65539, 131072, 0, 65540, 131072, 0)
 script = ExtResource("4_xsm37")
+
+[node name="P1Timer" type="Timer" parent="."]
+one_shot = true
+autostart = true
+
+[node name="P2Timer" type="Timer" parent="."]
+one_shot = true
+
+[node name="P1UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_top = 336.0
+offset_right = 168.0
+offset_bottom = 400.0
+
+[node name="Background" type="ColorRect" parent="P1UI"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.971
+anchor_bottom = 0.5
+offset_right = 4.87199
+offset_bottom = 32.0
+color = Color(0.756863, 0.698039, 0.580392, 1)
+
+[node name="Hotbar" type="TextureRect" parent="P1UI"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 5.0
+offset_top = 1.0
+offset_right = 165.0
+offset_bottom = 41.0
+texture = ExtResource("6_1umiv")
+stretch_mode = 2
+
+[node name="TimerLabel" type="Label" parent="P1UI"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -16.0
+offset_top = -36.0
+offset_right = 16.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "60.0
+"
+
+[node name="Wall" type="Control" parent="P1UI"]
+anchors_preset = 0
+offset_left = 5.0
+offset_top = 1.0
+offset_right = 37.0
+offset_bottom = 33.0
+
+[node name="WallLabel" type="Label" parent="P1UI/Wall"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -10.0
+offset_top = -19.0
+offset_bottom = 7.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.552941, 0, 0, 1)
+theme_override_font_sizes/font_size = 0
+text = "0"
+
+[node name="FakeWall" type="Control" parent="P1UI"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 37.0
+offset_top = 1.0
+offset_right = 69.0
+offset_bottom = 33.0
+
+[node name="FakeWallLabel" type="Label" parent="P1UI/FakeWall"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -10.0
+offset_top = -19.0
+offset_bottom = 7.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.552941, 0, 0, 1)
+theme_override_font_sizes/font_size = 0
+text = "0"
+
+[node name="Boulder" type="Control" parent="P1UI"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 133.0
+offset_top = 2.0
+offset_right = 165.0
+offset_bottom = 34.0
+
+[node name="BoulderLabel" type="Label" parent="P1UI/Boulder"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -10.0
+offset_top = -19.0
+offset_bottom = 7.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.552941, 0, 0, 1)
+theme_override_font_sizes/font_size = 0
+text = "0"
+
+[node name="OilCooldown" type="ColorRect" parent="P1UI"]
+visible = false
+layout_mode = 0
+offset_left = 69.0
+offset_top = 2.0
+offset_right = 101.0
+offset_bottom = 34.0
+color = Color(0, 0, 0, 0.32549)
+script = ExtResource("7_6vbxr")
+
+[node name="Progress" type="TextureProgressBar" parent="P1UI/OilCooldown"]
+texture_filter = 1
+layout_mode = 1
+offset_right = 32.0
+offset_bottom = 32.0
+value = 40.0
+fill_mode = 4
+texture_progress = ExtResource("8_ey5wi")
+tint_under = Color(0.113725, 0.113725, 0.113725, 1)
+
+[node name="Timer" type="Timer" parent="P1UI/OilCooldown"]
+one_shot = true
+
+[node name="BombCooldown" type="ColorRect" parent="P1UI"]
+visible = false
+layout_mode = 0
+offset_left = 101.0
+offset_top = 2.0
+offset_right = 133.0
+offset_bottom = 34.0
+color = Color(0, 0, 0, 0.32549)
+script = ExtResource("7_6vbxr")
+
+[node name="Progress" type="TextureProgressBar" parent="P1UI/BombCooldown"]
+texture_filter = 1
+layout_mode = 1
+offset_right = 32.0
+offset_bottom = 32.0
+value = 40.0
+fill_mode = 4
+texture_progress = ExtResource("8_ey5wi")
+tint_under = Color(0.113725, 0.113725, 0.113725, 1)
+
+[node name="Timer" type="Timer" parent="P1UI/BombCooldown"]
+one_shot = true
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="P1UI"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -64.0
+offset_top = -17.0
+offset_right = 64.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 0
+max_value = 5.0
+value = 3.0
+texture_under = ExtResource("8_bplva")
+texture_progress = ExtResource("8_bplva")
+tint_progress = Color(0, 0.615686, 0, 1)
+
+[node name="P2UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 168.0
+offset_top = 336.0
+offset_right = 336.0
+offset_bottom = 400.0
+
+[node name="Background" type="ColorRect" parent="P2UI"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.971
+anchor_bottom = 0.5
+offset_right = 4.87199
+offset_bottom = 32.0
+color = Color(0.313726, 0.192157, 0.137255, 1)
+
+[node name="Hotbar" type="TextureRect" parent="P2UI"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 5.0
+offset_top = 1.0
+offset_right = 165.0
+offset_bottom = 41.0
+texture = ExtResource("6_1umiv")
+stretch_mode = 2
+
+[node name="TimerLabel" type="Label" parent="P2UI"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -16.0
+offset_top = -36.0
+offset_right = 16.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "60.0
+"
+
+[node name="Wall" type="Control" parent="P2UI"]
+anchors_preset = 0
+offset_left = 5.0
+offset_top = 1.0
+offset_right = 37.0
+offset_bottom = 33.0
+
+[node name="WallLabel" type="Label" parent="P2UI/Wall"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -10.0
+offset_top = -19.0
+offset_bottom = 7.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.552941, 0, 0, 1)
+theme_override_font_sizes/font_size = 0
+text = "0"
+
+[node name="FakeWall" type="Control" parent="P2UI"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 37.0
+offset_top = 1.0
+offset_right = 69.0
+offset_bottom = 33.0
+
+[node name="FakeWallLabel" type="Label" parent="P2UI/FakeWall"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -10.0
+offset_top = -19.0
+offset_bottom = 7.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.552941, 0, 0, 1)
+theme_override_font_sizes/font_size = 0
+text = "0"
+
+[node name="Boulder" type="Control" parent="P2UI"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 133.0
+offset_top = 2.0
+offset_right = 165.0
+offset_bottom = 34.0
+
+[node name="BoulderLabel" type="Label" parent="P2UI/Boulder"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -10.0
+offset_top = -19.0
+offset_bottom = 7.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.552941, 0, 0, 1)
+theme_override_font_sizes/font_size = 0
+text = "0"
+
+[node name="OilCooldown" type="ColorRect" parent="P2UI"]
+visible = false
+layout_mode = 0
+offset_left = 69.0
+offset_top = 2.0
+offset_right = 101.0
+offset_bottom = 34.0
+color = Color(0, 0, 0, 0.32549)
+script = ExtResource("7_6vbxr")
+
+[node name="Progress" type="TextureProgressBar" parent="P2UI/OilCooldown"]
+texture_filter = 1
+layout_mode = 1
+offset_right = 32.0
+offset_bottom = 32.0
+value = 40.0
+fill_mode = 4
+texture_progress = ExtResource("8_ey5wi")
+tint_under = Color(0.113725, 0.113725, 0.113725, 1)
+
+[node name="Timer" type="Timer" parent="P2UI/OilCooldown"]
+one_shot = true
+
+[node name="BombCooldown" type="ColorRect" parent="P2UI"]
+visible = false
+layout_mode = 0
+offset_left = 101.0
+offset_top = 2.0
+offset_right = 133.0
+offset_bottom = 34.0
+color = Color(0, 0, 0, 0.32549)
+script = ExtResource("7_6vbxr")
+
+[node name="Progress" type="TextureProgressBar" parent="P2UI/BombCooldown"]
+texture_filter = 1
+layout_mode = 1
+offset_right = 32.0
+offset_bottom = 32.0
+value = 40.0
+fill_mode = 4
+texture_progress = ExtResource("8_ey5wi")
+tint_under = Color(0.113725, 0.113725, 0.113725, 1)
+
+[node name="Timer" type="Timer" parent="P2UI/BombCooldown"]
+one_shot = true
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="P2UI"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -64.0
+offset_top = -17.0
+offset_right = 64.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 0
+max_value = 5.0
+value = 3.0
+texture_under = ExtResource("8_bplva")
+texture_progress = ExtResource("8_bplva")
+tint_progress = Color(0, 0.615686, 0, 1)
+
+[connection signal="timeout" from="P1Timer" to="." method="_on_p_1_timer_timeout"]
+[connection signal="timeout" from="P2Timer" to="." method="_on_p_2_timer_timeout"]
+[connection signal="timeout" from="P1UI/OilCooldown/Timer" to="." method="_on_p1_oil_timer_timeout"]
+[connection signal="timeout" from="P1UI/OilCooldown/Timer" to="P1UI/OilCooldown" method="_on_timer_timeout" flags=18]
+[connection signal="timeout" from="P1UI/BombCooldown/Timer" to="." method="_on_p1_bomb_timer_timeout"]
+[connection signal="timeout" from="P1UI/BombCooldown/Timer" to="P1UI/BombCooldown" method="_on_timer_timeout" flags=18]
+[connection signal="value_changed" from="P1UI/TextureProgressBar" to="." method="_on_p1_texture_progress_bar_value_changed"]
+[connection signal="timeout" from="P2UI/OilCooldown/Timer" to="." method="_on_p2_oil_timer_timeout"]
+[connection signal="timeout" from="P2UI/OilCooldown/Timer" to="P2UI/OilCooldown" method="_on_timer_timeout" flags=18]
+[connection signal="timeout" from="P2UI/BombCooldown/Timer" to="." method="_on_p2_bomb_timer_timeout"]
+[connection signal="timeout" from="P2UI/BombCooldown/Timer" to="P2UI/BombCooldown" method="_on_timer_timeout" flags=18]
+[connection signal="value_changed" from="P2UI/TextureProgressBar" to="." method="_on_p2_texture_progress_bar_value_changed"]
