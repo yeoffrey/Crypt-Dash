@@ -26,6 +26,7 @@ Globaldata="*res://Scripts/globaldata.gd"
 
 window/size/viewport_width=336
 window/size/viewport_height=400
+window/size/mode=2
 window/stretch/mode="viewport"
 
 [editor]

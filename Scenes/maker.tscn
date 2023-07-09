@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://Scripts/maker.gd" id="1_lito8"]
 [ext_resource type="PackedScene" path="res://Scenes/oil.tscn" id="2_bnn38"]
 [ext_resource type="Texture2D" uid="uid://beyobu6y3pwvm" path="res://Sprites/Cursor.png" id="2_i46gs"]
-[ext_resource type="PackedScene" path="res://Scenes/bouldertrigger.tscn" id="2_w73iu"]
+[ext_resource type="PackedScene" uid="uid://c50wmkuxfi4gw" path="res://Scenes/bouldertrigger.tscn" id="2_w73iu"]
 [ext_resource type="PackedScene" uid="uid://kj8puca60r82" path="res://Scenes/bomb.tscn" id="3_xvvvd"]
 
 [node name="maker" type="Node2D"]

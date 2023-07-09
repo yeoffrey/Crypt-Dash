@@ -21,10 +21,7 @@ func _physics_process(delta):
 		boulder_break()
 
 func boulder_break():
-	var bodies = get_overlapping_bodies()
-	for i in bodies.size():
-		if bodies[i] is Runner:
-			bodies[i].take_damage(1.5,3)
+	manager.runner.take_damage(1.5,3)
 	manager.sound_manager.stop_boulder_rolling()
 	manager.sound_manager.play_boulder_crash()
 	queue_free()
