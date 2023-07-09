@@ -10,7 +10,7 @@ extends Node2D
 @onready var place_thing = $PlaceThing
 @onready var fake_disappears = $FakeDisappears
 @onready var reverse = $Reverse
-
+@onready var pickup = $Pickup
 
 func play_boulder_rolling():
 	if !boulder_rolling.playing:
@@ -58,3 +58,5 @@ func play_fake_disappears():
 func play_reverse():
 	reverse.play()
 
+func play_pickup():
+	pickup.play()

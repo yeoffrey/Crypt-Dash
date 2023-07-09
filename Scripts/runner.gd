@@ -51,7 +51,7 @@ func update_velocity():
 		velocity.y = move_toward(velocity.y, 0, SPEED)
 
 func _input(event):
-	if event.is_action_pressed(inputs[11]) && manager.can_runner_switch():
+	if event.is_action_pressed(inputs[11]) && manager.can_runner_switch() && can_move:
 		print("runner switch")
 		manager.switch_state()
 

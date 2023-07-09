@@ -46,7 +46,6 @@ func _input(event):
 		var val = MazeManager.get_value(maze_position.x, maze_position.y)
 		if not_trap(val) && maze_position != maze.get_player_pos():
 			if event.is_action_pressed(inputs[4]) && manager.walls > 0 && val != Enums.TILE_TYPE.WALL:
-				print("we here")
 				manager.walls -= 1
 				MazeManager.set_value(maze_position.x, maze_position.y, Enums.TILE_TYPE.WALL)
 				
@@ -115,7 +114,6 @@ func _input(event):
 		else:
 			manager.sound_manager.play_buzzer()
 		if event.is_action_pressed(inputs[11]) && manager.can_maker_switch():
-			print("Maker switch")
 			manager.switch_state()
 
 

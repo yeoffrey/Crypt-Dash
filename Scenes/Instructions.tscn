@@ -1,9 +1,16 @@
-[gd_scene load_steps=3 format=3 uid="uid://cntylhnc2wxfv"]
+[gd_scene load_steps=9 format=3 uid="uid://cntylhnc2wxfv"]
 
 [ext_resource type="Script" path="res://Scripts/Credits.gd" id="1_aaolm"]
 [ext_resource type="Texture2D" uid="uid://chakn4bb1c7ua" path="res://Sprites/main_menu_bg.png" id="2_g1af8"]
+[ext_resource type="Texture2D" uid="uid://geuh32swljaj" path="res://Sprites/outline.png" id="3_moo0a"]
+[ext_resource type="Texture2D" uid="uid://beyobu6y3pwvm" path="res://Sprites/Cursor.png" id="4_gb1yq"]
+[ext_resource type="Texture2D" uid="uid://cumxdtj4vbdug" path="res://Sprites/runner_sprite_sheet.png" id="5_ifkx6"]
+[ext_resource type="Texture2D" uid="uid://bphuuceod4jb" path="res://Sprites/builder_ui_spritesheet.png" id="6_4vqtt"]
+[ext_resource type="Texture2D" uid="uid://co2peew7bu0ci" path="res://Sprites/wall_floor_sprite_sheet.png" id="7_glcu7"]
+[ext_resource type="AudioStream" uid="uid://dr0uxow3mwxd6" path="res://Audio/Running_Music.wav" id="8_tlskw"]
 
 [node name="Credits" type="Node2D"]
+texture_filter = 1
 script = ExtResource("1_aaolm")
 
 [node name="MainMenuBg" type="Sprite2D" parent="."]
@@ -22,25 +29,42 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Label" type="Label" parent="User Interface"]
+texture_filter = 1
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -83.5
-offset_top = 30.0
-offset_right = 83.5
-offset_bottom = 57.0
+offset_left = -476.0
+offset_right = 482.0
+offset_bottom = 425.0
 grow_horizontal = 2
-text = "Credits
+theme_override_font_sizes/font_size = 9
+text = "In this game both players will be switching between 
+two different roles: The Runner and Maker
 
-Programmer:
-Eggsenbacon
+P1 controls: 
+•	Runner/Maker: WASD for movement,  ctrl for swap roles
+•	Maker: 12345 for hotbar, ~ for remove
+P2 controls: 
+•	Runner/Maker: IJKL for movement, space for swap roles
+•	Maker: 67890 for hotbar, - for remove
 
-Sound / Programmer:
-hi im appa
+Runner: 
+•	Your goal is to complete the maze and reach the exit
+•	Can swap roles after moving 5 tiles
+Maker:
+•	Your goal is to stop the runner from completing the maze
+•	Can swap roles after hitting the player with enough traps
 
-Artist:
-YoGizmo"
+Walls can be picked up by placing other tiles or removing.
+Trap pickups will spawn in the maze which will increase 
+uses of fake walls and boulders while 
+oil slick and bombs can be placed infinitely on a cooldown.
+
+If a runner completes the maze they win!
+A clock will count down while you are the runner. 
+If it reaches zero you instantly lose the game.
+"
 horizontal_alignment = 1
 
 [node name="Back" type="Button" parent="User Interface"]
@@ -50,12 +74,42 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -22.5
-offset_top = -86.0
-offset_right = 22.5
-offset_bottom = -55.0
+offset_left = 117.0
+offset_top = -33.0
+offset_right = 162.0
+offset_bottom = -2.0
 grow_horizontal = 2
 grow_vertical = 0
 text = "Back"
+
+[node name="Outline" type="Sprite2D" parent="."]
+position = Vector2(198, 217)
+texture = ExtResource("3_moo0a")
+
+[node name="Cursor" type="Sprite2D" parent="."]
+position = Vector2(200, 223)
+texture = ExtResource("4_gb1yq")
+
+[node name="RunnerSpriteSheet" type="Sprite2D" parent="."]
+position = Vector2(140, 165)
+texture = ExtResource("5_ifkx6")
+hframes = 10
+
+[node name="BuilderUiSpritesheet" type="Sprite2D" parent="."]
+position = Vector2(169, 343)
+scale = Vector2(0.59375, 0.59375)
+texture = ExtResource("6_4vqtt")
+
+[node name="WallFloorSpriteSheet" type="Sprite2D" parent="."]
+position = Vector2(303, 180)
+texture = ExtResource("7_glcu7")
+hframes = 4
+vframes = 2
+frame = 3
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_tlskw")
+volume_db = -22.0
+autoplay = true
 
 [connection signal="pressed" from="User Interface/Back" to="." method="_on_back_pressed" flags=18]

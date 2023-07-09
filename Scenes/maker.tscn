@@ -2,9 +2,9 @@
 
 [ext_resource type="Texture2D" uid="uid://geuh32swljaj" path="res://Sprites/outline.png" id="1_atq7k"]
 [ext_resource type="Script" path="res://Scripts/maker.gd" id="1_lito8"]
-[ext_resource type="PackedScene" uid="uid://bln63s3rsh7f8" path="res://Scenes/oil.tscn" id="2_bnn38"]
+[ext_resource type="PackedScene" path="res://Scenes/oil.tscn" id="2_bnn38"]
 [ext_resource type="Texture2D" uid="uid://beyobu6y3pwvm" path="res://Sprites/Cursor.png" id="2_i46gs"]
-[ext_resource type="PackedScene" uid="uid://6veujfm87vos" path="res://Scenes/bouldertrigger.tscn" id="2_w73iu"]
+[ext_resource type="PackedScene" path="res://Scenes/bouldertrigger.tscn" id="2_w73iu"]
 [ext_resource type="PackedScene" uid="uid://kj8puca60r82" path="res://Scenes/bomb.tscn" id="3_xvvvd"]
 
 [node name="maker" type="Node2D"]

@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://do136vapcabx4"]
+[gd_scene load_steps=6 format=3 uid="uid://do136vapcabx4"]
 
 [ext_resource type="Script" path="res://Scripts/sceneController.gd" id="1_ui0ch"]
 [ext_resource type="Texture2D" uid="uid://chakn4bb1c7ua" path="res://Sprites/main_menu_bg.png" id="2_l8vw8"]
 [ext_resource type="Texture2D" uid="uid://ba8q1a20tcdjd" path="res://Sprites/main_menu_hand.png" id="3_kri0k"]
 [ext_resource type="AudioStream" uid="uid://c77h6v1ohwcbl" path="res://Audio/Ambience_1_Water.wav" id="4_204ka"]
+[ext_resource type="AudioStream" uid="uid://btis0npv7on6d" path="res://Audio/Torch 2.wav" id="5_jgjbt"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_ui0ch")
@@ -66,6 +67,21 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Credits"
 
+[node name="Instructions" type="Button" parent="User Interface"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = 65.5
+offset_right = 50.0
+offset_bottom = 96.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "How to Play"
+
 [node name="Quit" type="Button" parent="User Interface"]
 layout_mode = 1
 anchors_preset = 8
@@ -74,9 +90,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -23.0
-offset_top = 63.5
+offset_top = 104.5
 offset_right = 23.0
-offset_bottom = 94.5
+offset_bottom = 135.5
 grow_horizontal = 2
 grow_vertical = 2
 text = "Quit"
@@ -87,11 +103,17 @@ position = Vector2(170, 202)
 scale = Vector2(6.3, 6.3)
 texture = ExtResource("3_kri0k")
 
-[node name="Ambience" type="AudioStreamPlayer" parent="."]
+[node name="Water" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_204ka")
-volume_db = -40.0
+volume_db = -60.0
+autoplay = true
+
+[node name="Fire" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_jgjbt")
+volume_db = -30.0
 autoplay = true
 
 [connection signal="pressed" from="User Interface/Play" to="." method="start"]
 [connection signal="pressed" from="User Interface/Credits" to="." method="_on_credits_pressed"]
+[connection signal="pressed" from="User Interface/Instructions" to="." method="_on_instructions_pressed"]
 [connection signal="pressed" from="User Interface/Quit" to="." method="quit"]

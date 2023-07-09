@@ -176,6 +176,7 @@ func can_runner_switch():
 		return p2_switch_bar.value == 5
 
 func give_pickup(type:int):
+	sound_manager.play_pickup()
 	if type == 0:
 		if (switches % 2 == 1):
 			p1_inventory.fake_wall += 1

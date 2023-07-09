@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://dprpgbahv3hqc"]
+[gd_scene load_steps=26 format=3 uid="uid://dprpgbahv3hqc"]
 
 [ext_resource type="Script" path="res://Scripts/gameManager.gd" id="1_h0vcg"]
 [ext_resource type="PackedScene" uid="uid://b0k81ua8xbgxp" path="res://Scenes/maker.tscn" id="2_ilbcw"]
@@ -21,6 +21,8 @@
 [ext_resource type="AudioStream" uid="uid://ia1b0midcrrv" path="res://Audio/Place Wall.wav" id="19_ccoov"]
 [ext_resource type="AudioStream" uid="uid://dejduga2oxkph" path="res://Audio/Wall Disappears.wav" id="20_kgy2r"]
 [ext_resource type="AudioStream" uid="uid://c75xa6mav4on6" path="res://Audio/Players Switch.wav" id="21_fr3sc"]
+[ext_resource type="AudioStream" uid="uid://bfdpri0hiqya2" path="res://Audio/pickup.wav" id="22_n6w7a"]
+[ext_resource type="AudioStream" uid="uid://dr0uxow3mwxd6" path="res://Audio/Running_Music.wav" id="23_c5k5w"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ch73p"]
 texture = ExtResource("3_xfcar")
@@ -481,6 +483,15 @@ volume_db = -25.0
 [node name="Reverse" type="AudioStreamPlayer" parent="SoundManager"]
 stream = ExtResource("21_fr3sc")
 volume_db = -20.0
+
+[node name="Pickup" type="AudioStreamPlayer" parent="SoundManager"]
+stream = ExtResource("22_n6w7a")
+volume_db = -20.0
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("23_c5k5w")
+volume_db = -22.0
+autoplay = true
 
 [connection signal="timeout" from="P1Timer" to="." method="_on_p_1_timer_timeout"]
 [connection signal="timeout" from="P2Timer" to="." method="_on_p_2_timer_timeout"]
