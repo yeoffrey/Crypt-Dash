@@ -1,6 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://y7uhta7tvoec"]
+[gd_scene load_steps=7 format=3]
 
-[ext_resource type="Script" path="res://boulder.gd" id="1_e55x8"]
+[ext_resource type="Script" path="res://Scripts/boulder.gd" id="1_e55x8"]
 [ext_resource type="Texture2D" uid="uid://bpkujp8d5ar6q" path="res://Sprites/trap_spritesheet.png" id="2_s68cr"]
 
 [sub_resource type="Animation" id="Animation_dcxoa"]

@@ -30,8 +30,10 @@ func update_animation():
 		animation_tree.set("parameters/idle/blend_position", Vector2(direction_x, -direction_y))
 		animation_tree.set("parameters/running/blend_position", Vector2(direction_x, -direction_y))
 	if velocity != Vector2.ZERO:
+		manager.sound_manager.play_footsteps()
 		playback.travel("running")
 	else:
+		manager.sound_manager.stop_footsteps()
 		playback.travel("idle")
 
 func update_velocity():

@@ -1,7 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://6veujfm87vos"]
+[gd_scene load_steps=4 format=3]
 
-[ext_resource type="Script" path="res://Scenes/bouldertrigger.gd" id="1_xo3uu"]
-[ext_resource type="PackedScene" uid="uid://y7uhta7tvoec" path="res://Scenes/boulder.tscn" id="2_rxwfq"]
+[ext_resource type="Script" path="res://Scripts/bouldertrigger.gd" id="1_xo3uu"]
+[ext_resource type="PackedScene" path="res://Scenes/boulder.tscn" id="2_rxwfq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bw4kl"]
 size = Vector2(16, 16)

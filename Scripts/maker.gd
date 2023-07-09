@@ -30,6 +30,7 @@ func spawn_trap(val:int):
 		trap_instance = boulder.instantiate()
 	get_parent().add_child(trap_instance)
 	trap_instance.position = position
+	trap_instance.manager = manager
 
 func _input(event):
 	if event.is_action_pressed(inputs[0]) && MazeManager.get_neighbor(maze_position,0) != Vector2(-1,-1):
@@ -41,76 +42,84 @@ func _input(event):
 	if event.is_action_pressed(inputs[3]) && MazeManager.get_neighbor(maze_position,3) != Vector2(-1,-1):
 		maze_position = MazeManager.get_neighbor(maze_position,3,1)
 	
-	var val = MazeManager.get_value(maze_position.x, maze_position.y)
-	
-	if not_trap(val) && maze_position != maze.get_player_pos():
-		if event.is_action_pressed(inputs[4]) && manager.walls > 0 && val != Enums.TILE_TYPE.WALL:
-			print("we here")
-			manager.walls -= 1
-			MazeManager.set_value(maze_position.x, maze_position.y, Enums.TILE_TYPE.WALL)
-			
-			var solvable : bool
-			solvable = MazeManager.is_solvable(maze.get_player_pos())
-			if solvable:
-				return
-			
-			var walls : Array
-			for i in MazeManager.width:
-				for j in MazeManager.height:
-					if (MazeManager.get_value(i,j) == Enums.TILE_TYPE.WALL && Vector2(i,j) != maze_position):
-						walls.append(Vector2(i,j))
-
-			while !(solvable):
-				if walls.size() == 0:
-					MazeManager.set_value(maze_position.x, maze_position.y, Enums.TILE_TYPE.FLOOR)
-					manager.walls += 1
-					print("failed")
-					break
-				var index = 0
-				MazeManager.set_value(walls[index].x, walls[index].y, Enums.TILE_TYPE.FLOOR)
-				manager.walls += 1
+	if event.is_action_pressed(inputs[4]) || event.is_action_pressed(inputs[5]) || event.is_action_pressed(inputs[6]) || event.is_action_pressed(inputs[7]) || event.is_action_pressed(inputs[8]) || event.is_action_pressed(inputs[10]) || event.is_action_pressed(inputs[11]):
+		var val = MazeManager.get_value(maze_position.x, maze_position.y)
+		if not_trap(val) && maze_position != maze.get_player_pos():
+			if event.is_action_pressed(inputs[4]) && manager.walls > 0 && val != Enums.TILE_TYPE.WALL:
+				print("we here")
+				manager.walls -= 1
+				MazeManager.set_value(maze_position.x, maze_position.y, Enums.TILE_TYPE.WALL)
+				
+				var solvable : bool
 				solvable = MazeManager.is_solvable(maze.get_player_pos())
-				if !solvable:
-					MazeManager.set_value(walls[index].x, walls[index].y, Enums.TILE_TYPE.WALL)
-					manager.walls -= 1
-				else:
-					print(walls[index])
-				walls.remove_at(index)
-			
+				if solvable:
+					manager.sound_manager.play_place_thing()
+					return
+				
+				var walls : Array
+				for i in MazeManager.width:
+					for j in MazeManager.height:
+						if (MazeManager.get_value(i,j) == Enums.TILE_TYPE.WALL && Vector2(i,j) != maze_position && i != 0 && i != MazeManager.width-1 && j != 0 && j != MazeManager.height-1):
+							walls.append(Vector2(i,j))
 
-		if event.is_action_pressed(inputs[5]) && inventory.fake_wall > 0:
-			if val == Enums.TILE_TYPE.WALL:
-				manager.walls += 1
-			MazeManager.set_value(maze_position.x, maze_position.y, Enums.TILE_TYPE.FAKE_WALL)
-			inventory.place_fake_wall()
-		if event.is_action_pressed(inputs[6]) && inventory.oil:
-			if val == Enums.TILE_TYPE.WALL:
-				manager.walls += 1
-			MazeManager.set_value(maze_position.x, maze_position.y, Enums.TILE_TYPE.OIL)
-			spawn_trap(0)
-			inventory.place_oil()
-		if event.is_action_pressed(inputs[7]) && inventory.bomb:
-			if val == Enums.TILE_TYPE.WALL:
-				manager.walls += 1
-			MazeManager.set_value(maze_position.x, maze_position.y, Enums.TILE_TYPE.BOMB)
-			spawn_trap(1)
-			inventory.place_bomb()
-		if event.is_action_pressed(inputs[8]) && inventory.boulder:
-			if val == Enums.TILE_TYPE.WALL:
-				manager.walls += 1
-			MazeManager.set_value(maze_position.x, maze_position.y, Enums.TILE_TYPE.BOULDER)
-			spawn_trap(2)
-			inventory.place_boulder()
-		if event.is_action_pressed(inputs[10]):
-			if MazeManager.get_value(maze_position.x, maze_position.y) == Enums.TILE_TYPE.WALL:
-				manager.walls += 1
-			MazeManager.set_value(maze_position.x, maze_position.y, Enums.TILE_TYPE.FLOOR)
-	if event.is_action_pressed(inputs[11]) && manager.can_maker_switch():
-		print("Maker switch")
-		manager.switch_state()
+				while !(solvable):
+					if walls.size() == 0:
+						MazeManager.set_value(maze_position.x, maze_position.y, Enums.TILE_TYPE.FLOOR)
+						manager.walls += 1
+						manager.sound_manager.play_buzzer()
+						break
+					var index = 0
+					MazeManager.set_value(walls[index].x, walls[index].y, Enums.TILE_TYPE.FLOOR)
+					manager.walls += 1
+					solvable = MazeManager.is_solvable(maze.get_player_pos())
+					if !solvable:
+						MazeManager.set_value(walls[index].x, walls[index].y, Enums.TILE_TYPE.WALL)
+						manager.walls -= 1
+					else:
+						manager.sound_manager.play_place_thing()
+					walls.remove_at(index)
+				
+
+			if event.is_action_pressed(inputs[5]) && inventory.fake_wall > 0:
+				if val == Enums.TILE_TYPE.WALL:
+					manager.walls += 1
+				MazeManager.set_value(maze_position.x, maze_position.y, Enums.TILE_TYPE.FAKE_WALL)
+				inventory.place_fake_wall()
+				manager.sound_manager.play_place_thing()
+			if event.is_action_pressed(inputs[6]) && inventory.oil:
+				if val == Enums.TILE_TYPE.WALL:
+					manager.walls += 1
+				MazeManager.set_value(maze_position.x, maze_position.y, Enums.TILE_TYPE.OIL)
+				spawn_trap(0)
+				inventory.place_oil()
+				manager.sound_manager.play_place_thing()
+			if event.is_action_pressed(inputs[7]) && inventory.bomb:
+				if val == Enums.TILE_TYPE.WALL:
+					manager.walls += 1
+				MazeManager.set_value(maze_position.x, maze_position.y, Enums.TILE_TYPE.BOMB)
+				spawn_trap(1)
+				inventory.place_bomb()
+				manager.sound_manager.play_place_thing()
+			if event.is_action_pressed(inputs[8]) && inventory.boulder:
+				if val == Enums.TILE_TYPE.WALL:
+					manager.walls += 1
+				MazeManager.set_value(maze_position.x, maze_position.y, Enums.TILE_TYPE.BOULDER)
+				spawn_trap(2)
+				inventory.place_boulder()
+				manager.sound_manager.play_place_thing()
+			if event.is_action_pressed(inputs[10]) && MazeManager.get_value(maze_position.x, maze_position.y) != Enums.TILE_TYPE.FLOOR:
+				if MazeManager.get_value(maze_position.x, maze_position.y) == Enums.TILE_TYPE.WALL:
+					manager.walls += 1
+				MazeManager.set_value(maze_position.x, maze_position.y, Enums.TILE_TYPE.FLOOR)
+				manager.sound_manager.play_place_thing()
+		else:
+			manager.sound_manager.play_buzzer()
+		if event.is_action_pressed(inputs[11]) && manager.can_maker_switch():
+			print("Maker switch")
+			manager.switch_state()
 
 
 
 
 func not_trap(val:int):
-	return val != Enums.TILE_TYPE.OIL && val != Enums.TILE_TYPE.BOULDER && val != Enums.TILE_TYPE.BOMB
+	return val != Enums.TILE_TYPE.OIL && val != Enums.TILE_TYPE.BOULDER && val != Enums.TILE_TYPE.BOMB && val != Enums.TILE_TYPE.PICKUP

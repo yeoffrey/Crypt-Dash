@@ -6,5 +6,6 @@ enum TILE_TYPE {
 	FAKE_WALL,
 	OIL,
 	BOMB,
-	BOULDER
+	BOULDER,
+	PICKUP
 }

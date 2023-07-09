@@ -14,9 +14,20 @@ func _init(newwidth:int = 21, newheight:int = 21):
 	maze = Array()
 	width = newwidth
 	height = newheight
-	start_cell = Vector2(width-2,height-2)
-	end_cell = Vector2(1,0) 
-	
+	start_cell = Vector2(rng.randi_range(0,9)*2+1,rng.randi_range(0,9)*2+1)
+	print(start_cell)
+	if (start_cell.x < 10):
+		if (start_cell.y > 10):
+			end_cell = Vector2(19,0)
+		else:
+			end_cell = Vector2(19,20)
+	else:
+		if (start_cell.y > 10):
+			end_cell = Vector2(1,0)
+		else:
+			end_cell = Vector2(1,20)
+		
+
 	for i in width:
 		var newarray = Array()
 		maze.append(newarray)

@@ -1,0 +1,74 @@
+[gd_scene load_steps=5 format=3 uid="uid://bw0c1kjxc04dr"]
+
+[ext_resource type="Script" path="res://Scripts/Credits.gd" id="1_s60h7"]
+[ext_resource type="Texture2D" uid="uid://chakn4bb1c7ua" path="res://Sprites/main_menu_bg.png" id="2_37sfi"]
+[ext_resource type="AudioStream" uid="uid://bypvgge6j4rlv" path="res://Audio/Among Us (Role Reveal) - Sound Effect (HD).wav" id="3_w5agv"]
+[ext_resource type="Texture2D" uid="uid://bjf6k6jm6u5sx" path="res://Sprites/lil_bro.png" id="4_8qhbr"]
+
+[node name="Credits" type="Node2D"]
+script = ExtResource("1_s60h7")
+
+[node name="MainMenuBg" type="Sprite2D" parent="."]
+position = Vector2(169, 201.5)
+scale = Vector2(6.3, 6.3)
+texture = ExtResource("2_37sfi")
+
+[node name="User Interface" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 336.0
+offset_bottom = 400.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="User Interface"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -83.5
+offset_top = 30.0
+offset_right = 83.5
+offset_bottom = 57.0
+grow_horizontal = 2
+text = "Credits
+
+Programmer:
+Eggsenbacon
+
+Sound / Programmer:
+hi im appa
+
+Artist:
+YoGizmo"
+horizontal_alignment = 1
+
+[node name="Back" type="Button" parent="User Interface"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -22.5
+offset_top = -86.0
+offset_right = 22.5
+offset_bottom = -55.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Back"
+
+[node name="Amoungus" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_w5agv")
+volume_db = -40.0
+autoplay = true
+
+[node name="LilBro" type="Sprite2D" parent="."]
+position = Vector2(33, 32)
+rotation = -0.389208
+scale = Vector2(1.37399, 1.35786)
+texture = ExtResource("4_8qhbr")
+
+[connection signal="pressed" from="User Interface/Back" to="." method="_on_back_pressed"]

@@ -18,6 +18,7 @@ config/icon="res://Sprites/icon.svg"
 [autoload]
 
 MazeManager="*res://Scripts/MazeManager.gd"
+Globaldata="*res://Scripts/globaldata.gd"
 
 [display]
 

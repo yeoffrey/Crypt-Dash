@@ -1,5 +1,6 @@
 extends TileMap
 
+@onready var manager = $".."
 var seen : Array
 var view : Array
 const TILE_ATLAS_WIDTH : int = 2
@@ -10,11 +11,13 @@ func _ready():
 		seen.append(newarray)
 		for j in MazeManager.height:
 			seen[i].append(MazeManager.get_value(i,j))
-
+		
 # Updates all the tiles in tile map to display proper tile
 func _process(delta):
 	var player_pos = get_player_pos()
 	if MazeManager.get_value(player_pos.x,player_pos.y) != Enums.TILE_TYPE.FLOOR:
+		if MazeManager.get_value(player_pos.x,player_pos.y) == Enums.TILE_TYPE.FAKE_WALL:
+			manager.sound_manager.play_fake_disappears()
 		MazeManager.set_value(player_pos.x,player_pos.y, Enums.TILE_TYPE.FLOOR)
 	
 	view = update_seen(player_pos, 5)
@@ -26,7 +29,7 @@ func _process(delta):
 			for k in view.size():
 				if view[k] == Vector2(i,j):
 					is_seen = true
-
+			
 			if is_seen:
 				if MazeManager.get_value(i,j) == Enums.TILE_TYPE.WALL:
 					tile_atlas_position = Vector2(0,0)

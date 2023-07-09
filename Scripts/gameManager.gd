@@ -3,6 +3,8 @@ extends Node2D
 class_name GameManager
 
 @onready var maze_map : TileMap = $MazeMap
+@onready var sound_manager = $SoundManager
+
 @onready var p1timer : Timer = $P1Timer
 @onready var p2timer : Timer = $P2Timer
 
@@ -70,17 +72,19 @@ func _ready():
 	switch_state()
 
 func _process(delta):
-	if (maze_map.get_player_pos() == MazeManager.end_cell):
-		end_game()
 	
 	if last_player_pos != maze_map.get_player_pos():
 		last_player_pos = maze_map.get_player_pos()
 		give_points_runner(1)
 	
 	if (switches % 2 == 1):
-		p2clock = p2timer.time_left
-	else:
+		if (maze_map.get_player_pos() == MazeManager.end_cell):
+			end_game(1)
 		p1clock = p1timer.time_left
+	else:
+		if (maze_map.get_player_pos() == MazeManager.end_cell):
+			end_game(2)
+		p2clock = p2timer.time_left
 	
 	p1_timer_label.text = str(p1clock).pad_decimals(0)
 	p1_wall_label.text = str(walls)
@@ -98,13 +102,15 @@ func _process(delta):
 
 func switch_state():
 	switches += 1
+	if (switches != 1):
+		sound_manager.play_reverse()
 	p1_switch_bar.value = 0
 	p2_switch_bar.value = 0
 	if (switches % 2 == 1):
 		runner.inputs = p1_inputs
 		maker.inputs = p2_inputs
-		p2timer.start(p2clock)
-		p1timer.stop()
+		p1timer.start(p1clock)
+		p2timer.stop()
 		p1_inventory = maker.inventory
 		maker.inventory = p2_inventory
 		p1_color_bar.color = floor_color
@@ -112,21 +118,22 @@ func switch_state():
 	else:
 		runner.inputs = p2_inputs
 		maker.inputs = p1_inputs
-		p2timer.stop()
-		p1timer.start(p1clock)
+		p1timer.stop()
+		p2timer.start(p2clock)
 		p2_inventory = maker.inventory
 		maker.inventory = p1_inventory
 		p2_color_bar.color = floor_color
 		p1_color_bar.color = wall_color
 
-func end_game():
-	get_tree().change_scene_to_file("res://Scenes/main.tscn")
+func end_game(winner:int):
+	Globaldata.winner = winner
+	get_tree().change_scene_to_file("res://Scenes/win.tscn")
 
 func _on_p_1_timer_timeout():
-	end_game()
+	end_game(2)
 
 func _on_p_2_timer_timeout():
-	end_game()
+	end_game(1)
 
 func _on_p1_oil_timer_timeout():
 	p1_inventory.oil = true
@@ -196,9 +203,9 @@ func spawn_pickup():
 		return false
 	var index = rng.randi_range(0,floors.size()-1)
 	pickup_instance.position = Vector2(floors[index].x*16 + 8, floors[index].y*16 + 8)
+	MazeManager.set_value(floors[index].x, floors[index].y, Enums.TILE_TYPE.PICKUP)
 	pickup_instance.set_type(rng.randi_range(0,1))
 	pickup_instance.manager = self
-	print("spawned")
 	return true
 
 
