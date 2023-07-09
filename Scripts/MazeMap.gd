@@ -1,35 +1,66 @@
 extends TileMap
 
-var mouse_pos : Vector2 = get_global_mouse_position()
-var cell : Vector2 = local_to_map(to_local(mouse_pos))
-var runner : Runner
-
+var seen : Array
+var view : Array
 const TILE_ATLAS_WIDTH : int = 2
+
+func _ready():
+	for i in MazeManager.width:
+		var newarray = Array()
+		seen.append(newarray)
+		for j in MazeManager.height:
+			seen[i].append(MazeManager.get_value(i,j))
 
 # Updates all the tiles in tile map to display proper tile
 func _process(delta):
+	var player_pos = get_player_pos()
+	if MazeManager.get_value(player_pos.x,player_pos.y) != Enums.TILE_TYPE.FLOOR:
+		MazeManager.set_value(player_pos.x,player_pos.y, Enums.TILE_TYPE.FLOOR)
+	
+	view = update_seen(player_pos, 5)
+	
 	for i in MazeManager.width:
-		for j in MazeManager.height:
-			set_cell(0,Vector2(i,j),0,Vector2(MazeManager.get_value(i,j)%TILE_ATLAS_WIDTH,MazeManager.get_value(i,j)/TILE_ATLAS_WIDTH), 0)
+		for j in MazeManager.height: 
+			var tile_atlas_position : Vector2
+			var is_seen = false
+			for k in view.size():
+				if view[k] == Vector2(i,j):
+					is_seen = true
 
-# This will all be changed in future
-func _input(event):
-	if event is InputEventMouseButton:
-		if event.button_index == 1 and event.pressed:
-			var mouse_pos : Vector2 = get_global_mouse_position()
-			var cell : Vector2 = local_to_map(to_local(mouse_pos))
-			var player_pos : Vector2 = Vector2(local_to_map(to_local(runner.position)))
-			if cell == player_pos:
-				print("placing at player")
-				return
-			if MazeManager.get_value(cell.x,cell.y) == Enums.TILE_TYPE.FLOOR:
-				MazeManager.set_value(cell.x,cell.y,Enums.TILE_TYPE.WALL)
-			else:
-				MazeManager.set_value(cell.x,cell.y,Enums.TILE_TYPE.FLOOR)
-			if !MazeManager.is_solvable(player_pos):
-				print("Placing unsolvable")
-				if MazeManager.get_value(cell.x,cell.y) == Enums.TILE_TYPE.FLOOR:
-					MazeManager.set_value(cell.x,cell.y,Enums.TILE_TYPE.WALL)
+			if is_seen:
+				if MazeManager.get_value(i,j) == Enums.TILE_TYPE.WALL:
+					tile_atlas_position = Vector2(0,0)
+				elif MazeManager.get_value(i,j) == Enums.TILE_TYPE.FAKE_WALL:
+					tile_atlas_position = Vector2(1,0)
 				else:
-					MazeManager.set_value(cell.x,cell.y,Enums.TILE_TYPE.FLOOR)
+					tile_atlas_position = Vector2(2,0)
+				set_cell(0,Vector2(i,j),0,tile_atlas_position,0)
+			else:
+				if seen[i][j] == Enums.TILE_TYPE.WALL:
+					tile_atlas_position = Vector2(0,1)
+				elif seen[i][j] == Enums.TILE_TYPE.FAKE_WALL:
+					tile_atlas_position = Vector2(1,1)
+				else:
+					tile_atlas_position = Vector2(2,1)
+				set_cell(0,Vector2(i,j),0,tile_atlas_position,0)
+	set_cell(0,MazeManager.end_cell,0,Vector2(3,1),0)
+	for k in view.size():
+				if view[k] == MazeManager.end_cell:
+					set_cell(0,MazeManager.end_cell,0,Vector2(3,0),0)
 
+func update_seen(cell:Vector2, depth:int):
+	if depth == 0:
+		var new_array = Array()
+		return new_array
+	seen[cell.x][cell.y] = MazeManager.get_value(cell.x,cell.y)
+	var ret : Array
+	ret.append(cell)
+	for i in 4:
+		var neighbor = MazeManager.get_neighbor(cell, i, 1)
+		if neighbor != Vector2(-1,-1):
+			ret.append_array(update_seen((neighbor),depth-1))
+	return ret
+
+
+func get_player_pos():
+	return Vector2(local_to_map(to_local(get_parent().runner.position)))

@@ -44,6 +44,7 @@ func randomize_maze():
 			visited_stack.append(neighbor)
 		else:
 			visited_stack.pop_back()
+	maze[end_cell.x][end_cell.y] = Enums.TILE_TYPE.FLOOR
 
 # Returns a random neighbor distance from cell. Returns the cords or (-1, -1) if fails
 func pick_neighbor(cell : Vector2, distance : int = 2):
