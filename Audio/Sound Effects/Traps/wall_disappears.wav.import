@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://c8dt14cb612pl"
+path="res://.godot/imported/wall_disappears.wav-f86ccd2577c72f812ea58b45cb8c1345.sample"
+
+[deps]
+
+source_file="res://Audio/Sound Effects/Traps/wall_disappears.wav"
+dest_files=["res://.godot/imported/wall_disappears.wav-f86ccd2577c72f812ea58b45cb8c1345.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

@@ -1,0 +1,24 @@
+[gd_scene load_steps=7 format=3 uid="uid://dh0gdx0pipca5"]
+
+[ext_resource type="Script" path="res://Scripts/Character/maker.gd" id="1_eg80f"]
+[ext_resource type="PackedScene" path="res://Scenes/Traps/oil.tscn" id="2_3mw7x"]
+[ext_resource type="PackedScene" path="res://Scenes/Traps/bomb.tscn" id="3_iame3"]
+[ext_resource type="PackedScene" uid="uid://bha433auwsrsg" path="res://Scenes/Traps/boulderTrigger.tscn" id="4_b5s0q"]
+[ext_resource type="Texture2D" uid="uid://geuh32swljaj" path="res://Sprites/Character/outline.png" id="5_p17tr"]
+[ext_resource type="Texture2D" uid="uid://beyobu6y3pwvm" path="res://Sprites/Character/cursor.png" id="6_cg430"]
+
+[node name="maker" type="Node2D"]
+z_index = 1
+script = ExtResource("1_eg80f")
+oil = ExtResource("2_3mw7x")
+bomb = ExtResource("3_iame3")
+boulder = ExtResource("4_b5s0q")
+
+[node name="outline" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("5_p17tr")
+
+[node name="cursor" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(2, 8)
+texture = ExtResource("6_cg430")

@@ -1,0 +1,48 @@
+[gd_scene load_steps=4 format=3 uid="uid://bha433auwsrsg"]
+
+[ext_resource type="Script" path="res://Scripts/Traps/boulderTrigger.gd" id="1_1bwyw"]
+[ext_resource type="PackedScene" uid="uid://dch1sj73g2pty" path="res://Scenes/Traps/boulder.tscn" id="2_yf7x3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bw4kl"]
+size = Vector2(2, 2)
+
+[node name="BoulderTrap" type="Node2D"]
+script = ExtResource("1_1bwyw")
+boulder = ExtResource("2_yf7x3")
+
+[node name="West" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="West"]
+position = Vector2(-16, 0)
+shape = SubResource("RectangleShape2D_bw4kl")
+
+[node name="East" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="East"]
+position = Vector2(16, 0)
+shape = SubResource("RectangleShape2D_bw4kl")
+
+[node name="North" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="North"]
+position = Vector2(0, -16)
+shape = SubResource("RectangleShape2D_bw4kl")
+
+[node name="South" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="South"]
+position = Vector2(0, 16)
+shape = SubResource("RectangleShape2D_bw4kl")
+
+[connection signal="body_entered" from="West" to="." method="_on_west_body_entered"]
+[connection signal="body_entered" from="East" to="." method="_on_east_body_entered"]
+[connection signal="body_entered" from="North" to="." method="_on_north_body_entered"]
+[connection signal="body_entered" from="South" to="." method="_on_south_body_entered"]
