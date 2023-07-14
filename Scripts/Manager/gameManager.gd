@@ -3,20 +3,21 @@ extends Node2D
 class_name GameManager
 
 @onready var maze_map : TileMap = $MazeMap
-@onready var sound_manager = $SoundManager
 
-@onready var p1timer : Timer = $P1Timer
-@onready var p2timer : Timer = $P2Timer
+@onready var ui = $GameUserInterface
 
+@onready var p1timer : Timer = ui.p1.timer
+@onready var p2timer : Timer = ui.p1.timer
 var p1clock : float = 60.0
 var p2clock : float = 60.0
 
 var p1_inputs = ["p1_up", "p1_right", "p1_down", "p1_left", "p1_1", "p1_2", "p1_3", "p1_4", "p1_5", "p1_interact", "p1_cancel", "p1_switch"]
 var p2_inputs = ["p2_up", "p2_right", "p2_down", "p2_left", "p2_1", "p2_2", "p2_3", "p2_4", "p2_5", "p2_interact", "p2_cancel", "p2_switch"]
 
-@onready var p1_inventory = Inventory.new(p1_oil_cooldown,p1_bomb_cooldown)
 
-@onready var p2_inventory = Inventory.new(p2_oil_cooldown,p2_bomb_cooldown)
+
+@onready var p1_inventory = Inventory.new(ui.p1.oil_cooldown,ui.p1.bomb_cooldown)
+@onready var p2_inventory = Inventory.new(ui.p2.oil_cooldown,ui.p2.bomb_cooldown)
 
 var walls : int
 
@@ -67,16 +68,16 @@ func _process(delta):
 			end_game(2)
 		p2clock = p2timer.time_left
 	
-	p1_timer_label.text = str(p1clock).pad_decimals(0)
-	p1_wall_label.text = str(walls)
-	p1_fake_wall_label.text = str(p1_inventory.fake_wall)
-	p1_boulder_label.text = str(p1_inventory.boulder)
+	ui.p1.timer_label.text = str(p1clock).pad_decimals(0)
+	ui.p1.wall_label.text = str(walls)
+	ui.p1.fake_wall_label.text = str(p1_inventory.fake_wall)
+	ui.p1.boulder_label.text = str(p1_inventory.boulder)
 	
 	
-	p2_timer_label.text = str(p2clock).pad_decimals(0)
-	p2_wall_label.text = str(walls)
-	p2_fake_wall_label.text = str(p2_inventory.fake_wall)
-	p2_boulder_label.text = str(p2_inventory.boulder)
+	ui.p2.timer_label.text = str(p2clock).pad_decimals(0)
+	ui.p2.wall_label.text = str(walls)
+	ui.p2.fake_wall_label.text = str(p2_inventory.fake_wall)
+	ui.p2.boulder_label.text = str(p2_inventory.boulder)
 	
 
 
@@ -84,9 +85,9 @@ func _process(delta):
 func switch_state():
 	switches += 1
 	if (switches != 1):
-		sound_manager.play_reverse()
-	p1_switch_bar.value = 0
-	p2_switch_bar.value = 0
+		SoundManager.play("switch")
+	ui.p1.switch_bar.value = 0
+	ui.p2.switch_bar.value = 0
 	if (switches % 2 == 1):
 		runner.inputs = p1_inputs
 		maker.inputs = p2_inputs
@@ -94,8 +95,8 @@ func switch_state():
 		p2timer.stop()
 		p1_inventory = maker.inventory
 		maker.inventory = p2_inventory
-		p1_color_bar.color = floor_color
-		p2_color_bar.color = wall_color
+		ui.p1.color_bar.color = floor_color
+		ui.p2.color_bar.color = wall_color
 	else:
 		runner.inputs = p2_inputs
 		maker.inputs = p1_inputs
@@ -103,8 +104,8 @@ func switch_state():
 		p2timer.start(p2clock)
 		p2_inventory = maker.inventory
 		maker.inventory = p1_inventory
-		p2_color_bar.color = floor_color
-		p1_color_bar.color = wall_color
+		ui.p2.color_bar.color = floor_color
+		ui.p1.color_bar.color = wall_color
 
 func end_game(winner:int):
 	Globaldata.winner = winner
@@ -130,31 +131,31 @@ func _on_p2_bomb_timer_timeout():
 
 func give_points_maker(points:int):
 	if (switches % 2 == 0):
-		if p1_switch_bar.value < 5:
-			p1_switch_bar.value = min(5, p1_switch_bar.value + points)
+		if ui.p1.switch_bar.value < 5:
+			ui.p1.switch_bar.value = min(5, ui.p1.switch_bar.value + points)
 	else:
-		if p2_switch_bar.value < 5:
-			p2_switch_bar.value = min(5, p2_switch_bar.value + points)
+		if ui.p2.switch_bar.value < 5:
+			ui.p2.switch_bar.value = min(5, ui.p2.switch_bar.value + points)
 
 func give_points_runner(points:int):
 	if (switches % 2 == 1):
-		if p1_switch_bar.value < 5:
-			p1_switch_bar.value = min(5, p1_switch_bar.value + points)
+		if ui.p1.switch_bar.value < 5:
+			ui.p1.switch_bar.value = min(5, ui.p1.switch_bar.value + points)
 	else:
-		if p2_switch_bar.value < 5:
-			p2_switch_bar.value = min(5, p2_switch_bar.value + points)
+		if ui.p2.switch_bar.value < 5:
+			ui.p2.switch_bar.value = min(5, ui.p2.switch_bar.value + points)
 
 func can_maker_switch():
 	if (switches % 2 == 0):
-		return p1_switch_bar.value == 5
+		return ui.p1.switch_bar.value == 5
 	else:
-		return p2_switch_bar.value == 5
+		return ui.p2.switch_bar.value == 5
 
 func can_runner_switch():
 	if (switches % 2 == 1):
-		return p1_switch_bar.value == 5
+		return ui.p1.switch_bar.value == 5
 	else:
-		return p2_switch_bar.value == 5
+		return ui.p1.switch_bar.value == 5
 
 func give_pickup(type:int):
 	SoundManager.play("pickup",true)
@@ -204,3 +205,4 @@ func _on_p2_texture_progress_bar_value_changed(value):
 		var ran = rng.randi_range(0,3)
 		for i in ran:
 			spawn_pickup()
+
